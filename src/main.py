@@ -11,15 +11,15 @@ def main():
 
     st.write("This is your basketball specialist. Ask me any basketball related question. Ah! I have no knowledge of 2022 onwards, because I am powered by ChatGPT. So, I don't do predictions.")
 
-    input_txt = st.text_area("Ask me your question")
+    input_txt = st.text_area("Ask me your question. Answers will be limited to 30 tokens")
 
-    prompt = "You are a basketball specialist. If a question is not related to basketball answer 'This is a non-basketball question'."
+    prompt = "You are a basketball specialist. If a question is not related to basketball answer 'This is a non-basketball question'. Limit your answer to 30 tokens if possible"
 
     if input_txt != "":
         # st.write("You entered:", input_txt)
         prompt += input_txt
 
-        response = openai.Completion.create(model="text-davinci-003", prompt=prompt)
+        response = openai.Completion.create(model="text-davinci-003", prompt=prompt, max_tokens=30)
         # Print answer to the screen
         st.write(response["choices"][0]["text"])
 
