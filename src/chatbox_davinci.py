@@ -18,19 +18,18 @@ def get_text():
     return input_text
 
 
-def generate_response_chat(messages):
-    """Generate Reponse using GPT3.5 API"""
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo-0301",
-        messages=messages,
-        max_tokens=256,
+def generate_response_completion(prompt, input_text):
+    """Generate Reponse using davinci API"""
+    prompt += input_text
+    response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=prompt, max_tokens=256,
         temperature=0
     )
-    return response["choices"][0]["message"]
+    return response["choices"][0]["text"]
 
-
-def chatbot():
-    """Main chatbox function based on ChatCompletion API and GPT-3.5-turbo model"""
+def chatbot_davinci():
+    """Chatbox based on Completion API and davinci model"""
     st.title("GIASE: Your basketball expert chatbox.")
 
     greeting_bot_msg = (
@@ -48,24 +47,14 @@ def chatbot():
     if 'past' not in st.session_state:
         st.session_state['past'] = []
 
-    # prompt = "You are a basketball expert. If a question is not related to basketball answer 'This is a non-basketball question'. Limit your answer to 256 tokens if possible"
-    prompt = "Classify if the following prompt questions are related basketball. If they are, answer the question. If they are not, reply only 'This is not a basketball question' and do not answer the question."
-    if 'messages' not in st.session_state:
-        st.session_state["messages"] = [
-        {
-            "role": "system",
-            "content": prompt
-        },
-    ]
+    prompt = "You are a basketball expert. If a question is not related to basketball answer 'This is a non-basketball question'. Limit your answer to 256 tokens if possible"
 
     user_input = get_text()
 
     if user_input:
-        st.session_state["messages"].append({"role": "user", "content": user_input})
-        response = generate_response_chat(st.session_state["messages"])
+        response = generate_response_completion(prompt, user_input)
         st.session_state.past.append(user_input)
-        st.session_state.generated.append(response["content"])
-        st.session_state["messages"].append(response)
+        st.session_state.generated.append(response)
 
     if st.session_state['generated']:
         for i in range(len(st.session_state['generated'])-1, -1, -1):
@@ -75,4 +64,4 @@ def chatbot():
 
 
 if __name__ == "__main__":
-    chatbot()
+    chatbot_davinci()
