@@ -34,7 +34,7 @@ def chatbot():
     st.title("GIASE: Your basketball expert chatbox.")
 
     greeting_bot_msg = (
-        "Hi, I am Giase, you basketball expert. Ask me anything, basketball related.\n"
+        "Hi, I am GIASE, your basketball expert. Ask me anything, basketball related.\n"
         "Ah! I have no knowledge of 2022 onwards, because I am powered by ChatGPT. "
         "So, I don't do predictions.\n"
         "*Example*: 'Who won the NBA finals in 2011 and who won the finals MVP?'\n"
@@ -48,8 +48,11 @@ def chatbot():
     if 'past' not in st.session_state:
         st.session_state['past'] = []
 
-    # prompt = "You are a basketball expert. If a question is not related to basketball answer 'This is a non-basketball question'. Limit your answer to 256 tokens if possible"
-    prompt = "Classify if the following prompt questions are related basketball. If they are, answer the question. If they are not, reply only 'This is not a basketball question' and do not answer the question."
+    prompt = (
+        "Classify if the following prompt questions are related basketball. "
+        "If they are, answer the question. If they are not, reply only "
+        "'This is not a basketball question' and do not answer the question."
+    )
     if 'messages' not in st.session_state:
         st.session_state["messages"] = [
         {
